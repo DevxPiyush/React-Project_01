@@ -1,13 +1,15 @@
 import React, {useContext} from 'react'
 import {ProductContext} from "../utils/Context.jsx";
-import {Link} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 
 const Navigation = () => {
     const [product] = useContext(ProductContext);
 
+    const {search, pathname} = useLocation()
+
     let distinct_category = product && product.reduce((acc,cv) => [...acc, cv.category], [])
     distinct_category = [...new Set(distinct_category)]
-    console.log(distinct_category);
+    // console.log(distinct_category);
 
     const color = () => {
         return `rgba(${Math.floor(Math.random()*255)},
@@ -25,6 +27,7 @@ const Navigation = () => {
             >
                 Add New Product
             </a>
+
             <hr />
 
             <h1 className="text-xl font-semibold text-blue-700">
@@ -42,6 +45,8 @@ const Navigation = () => {
                     </Link>
                 ))}
             </div>
+            {(pathname!= "/" || search.length>0) && <Link to={`/`} className={`px-3 py-3 bg-red-400 w-[40%] text-center text-white font-semibold rounded-full`}> Go Home </Link> }
+
         </nav>
     )
 }

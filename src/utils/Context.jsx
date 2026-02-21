@@ -10,7 +10,7 @@ const Context = (props) => {
     const getproducts = async () => {
         try {
             const { data } = await api.get("/products");
-            console.log(data);
+            // console.log(data);
             setproducts(data);
         } catch (e) {
             console.log(e);
