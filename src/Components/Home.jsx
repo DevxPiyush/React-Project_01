@@ -15,19 +15,13 @@ const Home = () => {
 
     const [filteredProducts, setFilteredProducts] = useState([]);
 
-    const getproductcategory = async () => {
-        try {
-            const { data } = await api.get(`/products/category/${category}`);
-            setFilteredProducts(data);
-        } catch (e) {
-            console.log(e);
-        }
-    };
-
     useEffect(() => {
         if (category) {
-            getproductcategory();
+            // getproductcategory();
+            setFilteredProducts(products.filter(p => p.category == category ))
+
         } else {
+
             setFilteredProducts(products);
         }
     }, [category, products]);

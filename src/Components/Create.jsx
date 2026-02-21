@@ -1,6 +1,12 @@
-import React, { useState } from "react";
+import React, {useContext, useState} from "react";
+import {ProductContext} from "../utils/Context.jsx";
+import {nanoid} from "nanoid";
+import {useNavigate} from "react-router-dom";
+
 
 const Create = () => {
+    const navigate = useNavigate();
+    const [products,setProducts] = useContext(ProductContext)
     const [title, settitle] = useState("");
     const [image, setimage] = useState("");
     const [category, setcategory] = useState("");
@@ -9,20 +15,25 @@ const Create = () => {
 
     const AddProductHandler = (e) => {
         e.preventDefault();
-        const product = {
-            title,image,category,price,description
-        }
-    }
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log({ title, image, category, price, description });
-    };
+        if (title.trim().length < 5 ||image.trim().length < 5 ||category.trim().length < 5 ||price.trim().length < 1 ||description.trim().length < 5 ) {
+            alert("No field Must be empty and every field must have more than 4 characters")
+            return;
+        }
+        const product = {
+            id: nanoid(),
+            title,image,category,price,description
+        };
+        setProducts([...products, product]);
+        localStorage.setItem("products" , JSON.stringify([...products, product]))
+        navigate('/');
+        // toast.success("New Product Added")
+    }
 
     return (
         <div className="w-full min-h-screen flex items-center justify-center bg-gray-50">
             <form
-                onSubmit={handleSubmit}
+                onSubmit={AddProductHandler}
                 className="w-full max-w-2xl bg-white shadow-xl rounded-2xl p-10 flex flex-col gap-6"
             >
                 <h1 className="text-3xl font-semibold text-gray-800 text-center">
@@ -77,6 +88,7 @@ const Create = () => {
 
                 {/* Button */}
                 <button
+                    onClick={() => useNavigate('/')}
                     type="submit"
                     className="mt-2 py-3 rounded-lg bg-blue-600 text-white text-lg font-medium hover:bg-blue-700 transition duration-300"
                 >
